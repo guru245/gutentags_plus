@@ -19,7 +19,7 @@ let g:gutentags_auto_add_gtags_cscope = 0
 
 
 "----------------------------------------------------------------------
-" strip heading and ending spaces 
+" strip heading and ending spaces
 "----------------------------------------------------------------------
 function! s:string_strip(text)
 	return substitute(a:text, '^\s*\(.\{-}\)\s*$', '\1', '')
@@ -177,7 +177,7 @@ function! s:quickfix_open(size)
 		endif
 	endfunc
 	let s:quickfix_open = 0
-	let l:winnr = winnr()			
+	let l:winnr = winnr()
 	noautocmd windo call s:WindowCheck(0)
 	noautocmd silent! exec ''.l:winnr.'wincmd w'
 	if s:quickfix_open != 0
@@ -198,7 +198,7 @@ endfunc
 "----------------------------------------------------------------------
 " Find search
 "----------------------------------------------------------------------
-function! s:GscopeFind(bang, what, ...)
+function! s:Gs(bang, what, ...)
 	let keyword = (a:0 > 0)? a:1 : ''
 	let dbname = s:get_gtags_file()
 	let root = get(b:, 'gutentags_root', '')
@@ -213,7 +213,7 @@ function! s:GscopeFind(bang, what, ...)
 	if a:0 == 0 || keyword == ''
 		redraw! | echo '' | redraw!
 		echohl ErrorMsg
-		echom 'E560: Usage: GscopeFind a|c|d|e|f|g|i|s|t name'
+		echom 'E560: Usage: Gs a|c|d|e|f|g|i|s|t name'
 		echohl NONE
 		return 0
 	endif
@@ -242,7 +242,7 @@ function! s:GscopeFind(bang, what, ...)
 		let text = 'assigned "'.keyword.'"'
 	endif
 	let text = "[cscope ".a:what.": ".text."]"
-	let title = "GscopeFind ".a:what.' "'.keyword.'"'
+	let title = "Gs ".a:what.' "'.keyword.'"'
 	exec 'cexpr text'
 	if has('nvim') == 0 && (v:version >= 800 || has('patch-7.4.2210'))
 		call setqflist([], 'a', {'title':title})
@@ -287,7 +287,7 @@ function! s:GscopeFind(bang, what, ...)
 endfunc
 
 
-command! -nargs=+ -bang GscopeFind call s:GscopeFind(<bang>0, <f-args>)
+command! -nargs=+ -bang Gs call s:Gs(<bang>0, <f-args>)
 
 
 "----------------------------------------------------------------------
@@ -306,15 +306,15 @@ command! -nargs=0 GscopeKill call s:GscopeKill()
 " setup keymaps
 "----------------------------------------------------------------------
 if get(g:, 'gutentags_plus_nomap', 0) == 0
-	noremap <silent> <leader>cs :GscopeFind s <C-R><C-W><cr>
-	noremap <silent> <leader>cg :GscopeFind g <C-R><C-W><cr>
-	noremap <silent> <leader>cc :GscopeFind c <C-R><C-W><cr>
-	noremap <silent> <leader>ct :GscopeFind t <C-R><C-W><cr>
-	noremap <silent> <leader>ce :GscopeFind e <C-R><C-W><cr>
-	noremap <silent> <leader>cf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
-	noremap <silent> <leader>ci :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
-	noremap <silent> <leader>cd :GscopeFind d <C-R><C-W><cr>
-	noremap <silent> <leader>ca :GscopeFind a <C-R><C-W><cr>
+	noremap <silent> <leader>cs :Gs s <C-R><C-W><cr>
+	noremap <silent> <leader>cg :Gs g <C-R><C-W><cr>
+	noremap <silent> <leader>cc :Gs c <C-R><C-W><cr>
+	noremap <silent> <leader>ct :Gs t <C-R><C-W><cr>
+	noremap <silent> <leader>ce :Gs e <C-R><C-W><cr>
+	noremap <silent> <leader>cf :Gs f <C-R>=expand("<cfile>")<cr><cr>
+	noremap <silent> <leader>ci :Gs i <C-R>=expand("<cfile>")<cr><cr>
+	noremap <silent> <leader>cd :Gs d <C-R><C-W><cr>
+	noremap <silent> <leader>ca :Gs a <C-R><C-W><cr>
 	noremap <silent> <leader>ck :GscopeKill<cr>
 endif
 
